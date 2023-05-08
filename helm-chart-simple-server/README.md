@@ -1,6 +1,6 @@
 # simple-server
 
-![Version: 2.1.6](https://img.shields.io/badge/Version-2.1.6-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 2.1.6](https://img.shields.io/badge/AppVersion-2.1.6-informational?style=flat-square)
+![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes
 
@@ -15,7 +15,7 @@ A Helm chart for Kubernetes
 | autoscaling.targetMemoryUtilizationPercentage | int | `30` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"maciuozz/kc7-sre-practica-final"` |  |
-| image.tag | string | `"2.1.6"` |  |
+| image.tag | string | `"1.0.0"` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
