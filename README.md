@@ -166,7 +166,7 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
  - Dentro del pod es necesario realizar una serie de pasos para la prueba de estrés:
    - Instalación de software necesario:
          
-         apk update && apk add git go
+         <span style="color:red;">apk update && apk add git go</span>
          
 Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
 
