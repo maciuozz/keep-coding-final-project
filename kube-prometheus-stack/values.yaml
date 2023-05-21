@@ -106,7 +106,7 @@ alertmanager:
     - name: 'null'
     - name: 'slack'
       slack_configs:
-      - api_url: 'https://hooks.slack.com/services/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' # <--- AÑADIR EN ESTA LÍNEA EL WEBHOOK CREADO
+      - api_url: 'https://hooks.slack.com/services/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' # <--- AÑADIR EN ESTA LÍNEA EL WEBHOOK CREADO
         send_resolved: true
         channel: '#paoloscotto-prometheus-alarms' # <--- AÑADIR EN ESTA LÍNEA EL CANAL
         title: '[{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] Monitoring Event Notification'
