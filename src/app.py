@@ -1,16 +1,15 @@
 
 """
 Module that sets up the necessary components, such as the MongoDB connection and the FastAPI server, and
-starts the server while allowing it to run continuously. Additionally, it starts an HTTP server for 
+starts the server while allowing it to run continuously. Additionally, it starts an HTTP server for
 exposing Prometheus metrics.
 """
 
 import asyncio
-
+from prometheus_client import start_http_server
 from motor.motor_asyncio import AsyncIOMotorClient
 from application.app import StudentsServer
 from config import config
-from prometheus_client import start_http_server
 
 
 class Container:
@@ -19,9 +18,9 @@ class Container:
     """
 
 #MONGODB_DB is the name of the MongoDB database. The MONGODB_URL property from the configuration is used
-#to create an instance of AsyncIOMotorClient, which connects to the MongoDB database. The client is then 
-#accessed using the _db_name attribute to obtain the specific database handler.An instance of the 
-#StudentsServer class is created, passing the config object and the MongoDB database handler (_db_handler) 
+#to create an instance of AsyncIOMotorClient, which connects to the MongoDB database. The client is then
+#accessed using the _db_name attribute to obtain the specific database handler.An instance of the
+#StudentsServer class is created, passing the config object and the MongoDB database handler (_db_handler)
 #as parameters. This sets up the FastAPI server with the appropriate configuration and database connection.
     def __init__(self):
         self._db_name = config.MONGODB_DB
@@ -34,7 +33,7 @@ class Container:
 
 #The start_http_server() function from the prometheus_client module is called with an argument of 8000, which
 #starts a Prometheus metrics endpoint on port 8000. An instance of the Container class is created.
-#The event loop is retrieved. The start_server method is scheduled as a future task. 
+#The event loop is retrieved. The start_server method is scheduled as a future task.
 #The event loop runs indefinitely.
 if __name__ == "__main__":
     start_http_server(8000)

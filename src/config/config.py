@@ -12,7 +12,7 @@ FASTAPI_CONFIG = {
 }
 
 #We set the MONGODB_URL environment variable after the creation of the image when installing
-#the Helm chart and pass it as a secret to the deployment. In the deployment we are using the 
+#the Helm chart and pass it as a secret to the deployment. In the deployment we are using the
 #envFrom field with a secretRef to include environment variables from a secret. The secret we
 #defined includes the MONGODB_URL value generated using a template expression and encoded
 #using base64. The Helm chart will create the secret and inject the environment variable into

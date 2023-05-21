@@ -3,12 +3,13 @@ Module to test API endpoints using unit tests
 """
 
 import json
-from fastapi.testclient import TestClient
-from application.app import StudentsServer, StudentModel, app
-from mongomock_motor import AsyncMongoMockClient
-from config import test_config as config
 import pytest
 import httpx
+from fastapi.testclient import TestClient
+from mongomock_motor import AsyncMongoMockClient
+from application.app import StudentsServer, StudentModel, app
+from config import test_config as config
+
 
 client = TestClient(app)
 
@@ -66,7 +67,7 @@ class TestFastAPIApp:
 #By mocking the database handler, the test can focus on verifying the behavior of the create_student method
 #in isolation. It ensures that the method correctly handles the input data and produces the expected response
 #without relying on an actual database connection. Using a mock database handler in unit tests allows for faster
-#and more controlled testing, as it eliminates dependencies on external resources and provides a predictable 
+#and more controlled testing, as it eliminates dependencies on external resources and provides a predictable
 #environment for testing specific functionality.
     @pytest.mark.asyncio
     async def create_student_test(self):
@@ -76,21 +77,21 @@ class TestFastAPIApp:
         db_handler = AsyncMongoMockClient()[config.MONGODB_DB]
         #An instance of StudentsServer is created, passing the test configuration and the db_handler as arguments.
         students_server = StudentsServer(config, db_handler)
-        #The create_student method of the students_server instance is called with self._valid_student_data_mongo 
+        #The create_student method of the students_server instance is called with self._valid_student_data_mongo
         #as the argument. This method is responsible to create a new student in the database.
         result = await students_server.create_student(self._valid_student_data_mongo)
-        #The result variable holds the response received from the create_student method. This response contains 
-        #information such as the status code and the response body. The response body, which is in bytes, is 
-        #decoded into a string using result.body.decode(). The decoded response body string is parsed as JSON using 
+        #The result variable holds the response received from the create_student method. This response contains
+        #information such as the status code and the response body. The response body, which is in bytes, is
+        #decoded into a string using result.body.decode(). The decoded response body string is parsed as JSON using
         #json.loads(), converting it into a Python object.
         result_data = json.loads(result.body.decode())
-        #Assertions are performed to verify the expected behavior. In this case, it checks that the status code of 
+        #Assertions are performed to verify the expected behavior. In this case, it checks that the status code of
         #the response is 201 (indicating a successful creation), and the result_data matches the _valid_student_data
         #that was used to create the student.
         assert result.status_code == 201
         assert result_data == self._valid_student_data
 
-    @pytest.mark.asyncio 
+    @pytest.mark.asyncio
     async def joke_endpoint_test(self):
         """Tests the joke endpoint"""
         async with httpx.AsyncClient(app=app, base_url="http://test") as async_client:

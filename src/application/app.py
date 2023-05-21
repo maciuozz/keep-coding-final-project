@@ -12,6 +12,7 @@ from hypercorn.config import Config as HyperCornConfig
 from pydantic import BaseModel, Field, EmailStr
 from bson import ObjectId
 from prometheus_client import Counter
+import requests
 
 #The endpoint counters are used to collect metrics on the total number of requests received by each of these endpoints.
 REQUESTS = Counter('server_requests_total', 'Total number of requests to this webserver')
@@ -113,7 +114,7 @@ class StudentsServer:
     """
     _hypercorn_config = None
 
-#This is the constructor method of the class. It initializes the StudentsServer object and sets its 
+#This is the constructor method of the class. It initializes the StudentsServer object and sets its
 #configuration parameters, logger, and database handler.
     def __init__(self, config, db_handler):
         self._hypercorn_config = HyperCornConfig()
@@ -121,7 +122,7 @@ class StudentsServer:
         self._logger = self.__get_logger()
         self._db_handler = db_handler
 
-#This method creates and configures a logger object for logging purposes. It sets the logger's level, 
+#This method creates and configures a logger object for logging purposes. It sets the logger's level,
 #formatter and handler based on the configuration provided.
     def __get_logger(self):
         logger = logging.getLogger(self._config.LOG_CONFIG['name'])
@@ -216,7 +217,8 @@ class StudentsServer:
             find_one({"_id": new_student.inserted_id})
         self._logger.debug('Added student successfully with _id %s', new_student.inserted_id)
         return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_student)
-    
+
+    @staticmethod
     async def tell_joke():
         """Tell a joke"""
         REQUESTS.inc()
