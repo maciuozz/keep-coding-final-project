@@ -152,33 +152,33 @@ Una vez se obtenga el mensaje de conexión exitosa a mongo, siendo algo como lo 
 Para forzar la alerta configurada es necesario realizar una prueba de estrés sobre el pod, para ello se deben seguir los siguientes pasos:
 
  - Para realizar esta prueba será necesario desactivar temporalmente el HPA configurado previamente mediante el helm de la aplicación, ya que sino nunca se lanzará la alarma ya que      empezará a paliarse este problema a través de la generación de nuevas réplicas:
-  
+
        helm -n monitoring upgrade --install my-release --create-namespace --wait helm-chart-simple-server --set autoscaling.enabled=false
-       
+
  - Obtener el POD que está ejecutando la aplicación. Es posible obtener el nombre del pod creado mediante el siguiente comando:
-       
+
        export POD_NAME=$(kubectl get pods --namespace monitoring -l "app.kubernetes.io/name=simple-server,app.kubernetes.io/instance=my-release" -o jsonpath="{.items[0].metadata.name}")
 
  - Una vez obtenido el nombre del pod es necesario conectarse a él mediante una shell interactiva:
-    
+
        kubectl -n monitoring exec -it $POD_NAME -- /bin/sh
 
  - Dentro del pod es necesario realizar una serie de pasos para la prueba de estrés:
    - Instalación de software necesario:
-         
+
          apk update && apk add git go
-   
-   - Descargar las herramientas para realizar la prueba de estrés: 
-         
+
+   - Descargar las herramientas para realizar la prueba de estrés:
+
          git clone https://github.com/jaeg/NodeWrecker.git
          cd NodeWrecker
          go build -o estres main.go
-       
-   - Ejecutar el binario compilado en el paso anterior para realizar prueba de estrés: 
+
+   - Ejecutar el binario compilado en el paso anterior para realizar prueba de estrés:
 
          ./estres -abuse-memory -escalate -max-duration 10000000
 
-Como que hemos configurado prometheus para que nos avise si la tasa promedio de uso de CPU es mayor que la cantidad promedio de CPU solicitada por el contenedor, despues de unos minutos deberíamos recibir notificaciones en Slack:
+Como que hemos configurado prometheus para que nos avise si el uso de CPU del contenedor ***simple-server*** supera la solicitud de recursos de CPU en un lapso de 1 minuto, despues de poco mas de 1 minuto deberíamos recibir notificaciones en Slack:
 
 <img width="1792" alt="Screenshot 2023-04-25 at 20 54 20" src="https://user-images.githubusercontent.com/118285718/234376318-b246d27a-9941-4d87-85a5-52d077ac5dc2.png">
 
