@@ -174,7 +174,7 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
          cd NodeWrecker
          go build -o estres main.go
        
-   - Ejecutar binario compilado en el paso anterior para realizar prueba de estrés: 
+   - Ejecutar el binario compilado en el paso anterior para realizar prueba de estrés: 
 
          ./estres -abuse-memory -escalate -max-duration 10000000
 
