@@ -177,42 +177,10 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
    - Ejecutar binario compilado en el paso anterior para realizar prueba de estrés: 
 
          ./estres -abuse-memory -escalate -max-duration 10000000
- 
-         
-Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
-
-    echo "GET http://localhost:8081" | vegeta attack -rate=500 -duration=60s | vegeta report
-
-El output del comando anterior debería ser similar a:
-
-    16:37 @/Users/paoloscotto/desktop/sre ~ (git)-[main] $ echo "GET http://localhost:8081" | vegeta attack -rate=500 -duration=60s | vegeta report
-    Requests      [total, rate, throughput]         30000, 500.02, 105.72
-    Duration      [total, attack, wait]             1m5s, 59.998s, 4.91s
-    Latencies     [min, mean, 50, 90, 95, 99, max]  29.164µs, 495.362ms, 99.3µs, 2.087s, 2.579s, 3.742s, 7.405s
-    Bytes In      [total, mean]                     144102, 4.80
-    Bytes Out     [total, mean]                     0, 0.00
-    Success       [ratio]                           22.87%
-    Status Codes  [code:count]                      0:23138  200:6862
-    Error Set:
-    Get "http://localhost:8081": dial tcp: lookup localhost: no such host
-    Get "http://localhost:8081": dial tcp 0.0.0.0:0->[::1]:8081: socket: too many open files
 
 Como que hemos configurado prometheus para que nos avise si la tasa promedio de uso de CPU es mayor que la cantidad promedio de CPU solicitada por el contenedor, despues de unos minutos deberíamos recibir notificaciones en Slack:
 
 <img width="1792" alt="Screenshot 2023-04-25 at 20 54 20" src="https://user-images.githubusercontent.com/118285718/234376318-b246d27a-9941-4d87-85a5-52d077ac5dc2.png">
-
-Aqui podemos observar el escalado/desescalado horizontal:
-
-    20:37 @/Users/paoloscotto/desktop/sre ~ (git)-[main] $ k get pod -n monitoring -w | grep simple
-    my-release-simple-server-7f89c4969b-ft57s                1/1     Running   0          13m
-    my-release-simple-server-7f89c4969b-htrf2                1/1     Running   0          13m
-    my-release-simple-server-7f89c4969b-ndnrv                1/1     Running   0          15m
-    my-release-simple-server-7f89c4969b-t4zbj                1/1     Running   0          13m
-    my-release-simple-server-7f89c4969b-t4zbj                1/1     Terminating   0          16m
-    my-release-simple-server-7f89c4969b-t4zbj                0/1     Terminating   0          17m
-    my-release-simple-server-7f89c4969b-t4zbj                0/1     Terminating   0          17m
-    my-release-simple-server-7f89c4969b-t4zbj                0/1     Terminating   0          17m
-    my-release-simple-server-7f89c4969b-t4zbj                0/1     Terminating   0          17m
 
 Para ver la salida de las métricas de Prometheus expuestas por la aplicación ejecutamos:
 
