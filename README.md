@@ -161,7 +161,7 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
 
  - Una vez obtenido el nombre del pod es necesario conectarse a él mediante una shell interactiva:
     
-       kubectl -n liberando-productos-practica exec -it $POD_NAME -- /bin/sh
+       kubectl -n monitoring exec -it $POD_NAME -- /bin/sh
 
  - Dentro del pod es necesario realizar una serie de pasos para la prueba de estrés:
    - Instalación de software necesario:
