@@ -166,7 +166,18 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
  - Dentro del pod es necesario realizar una serie de pasos para la prueba de estrés:
    - Instalación de software necesario:
          
-         <span style="color:red;">apk update && apk add git go</span>
+         apk update && apk add git go
+   
+   - Descargar las herramientas para realizar la prueba de estrés: 
+         
+         git clone https://github.com/jaeg/NodeWrecker.git
+         cd NodeWrecker
+         go build -o estres main.go
+       
+   - Ejecutar binario compilado en el paso anterior para realizar prueba de estrés: 
+
+         ./estres -abuse-memory -escalate -max-duration 10000000
+ 
          
 Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
 
