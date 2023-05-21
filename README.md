@@ -153,7 +153,7 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
 
  - Para realizar esta prueba será necesario desactivar temporalmente el HPA configurado previamente mediante el helm de la aplicación, ya que sino nunca se lanzará la alarma ya que      empezará a paliarse este problema a través de la generación de nuevas réplicas:
   
-    helm -n monitoring upgrade --install my-app --create-namespace --wait helm/simple-server --set autoscaling.enabled=false
+     helm -n monitoring upgrade --install my-release --create-namespace --wait helm-chart-simple-server --set autoscaling.enabled=false
 
 
 Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
