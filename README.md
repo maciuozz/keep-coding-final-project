@@ -136,17 +136,25 @@ Despues de ejecutar el ***port-forward*** mencionado en la sección ***NOTES*** 
 <img width="1390" alt="Screenshot 2023-04-25 at 23 43 09" src="https://user-images.githubusercontent.com/118285718/234411385-83dab2a4-cdce-4ea9-b451-b12ef61b950b.png">
 <img width="1347" alt="Screenshot 2023-04-25 at 23 43 31" src="https://user-images.githubusercontent.com/118285718/234411439-b9b3d80f-21d4-4c81-bd3f-cc101bc014a0.png">
 
-Crear una nueva pestaña y obtener los logs del container wait-mongo del deployment my-release-simple-server en el namespace monitoring-demo, observar como está utilizando ese contenedor para esperar a que MongoDB esté listo:
+Crear una nueva pestaña y obtener los logs del container ***wait-mongo*** del deployment ***my-release-simple-server*** en el namespace ***monitoring***, observar como está utilizando ese contenedor para esperar a que MongoDB esté listo:
 
     kubectl -n monitoring logs -f deployment/my-release-simple-server -c wait-mongo
 
-Una vez se obtenga el mensaje de conexión exitosa a mongo, siendo algo como lo mostrado a continuación, indicará que empezará el contenedor dfad:
+Una vez se obtenga el mensaje de conexión exitosa a mongo, siendo algo como lo mostrado a continuación, indicará que empezará el contenedor:
 
     Connecting to my-app-mongodb:27017 (10.101.242.27:27017)
     HTTP/1.0 200 OK
     Connection: close
     Content-Type: text/plain
     Content-Length: 85
+
+**Comprobación funcionamiento alerta**
+Para forzar la alerta configurada es necesario realizar una prueba de estrés sobre el pod, para ello se deben seguir los siguientes pasos:
+
+ - Para realizar esta prueba será necesario desactivar temporalmente el HPA configurado previamente mediante el helm de la aplicación, ya que sino nunca se lanzará la alarma ya que      empezará a paliarse este problema a través de la generación de nuevas réplicas:
+  
+    helm -n monitoring upgrade --install my-app --create-namespace --wait helm/simple-server --set autoscaling.enabled=false
+
 
 Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
 
