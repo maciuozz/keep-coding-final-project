@@ -195,8 +195,7 @@ class StudentsServer:
         """Add a new student
         Parameters
         ----------
-        student
-          Student representation
+        student: Student representation
         Returns
         -------
         Response from the action layer
