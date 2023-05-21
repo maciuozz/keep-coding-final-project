@@ -162,7 +162,12 @@ Para forzar la alerta configurada es necesario realizar una prueba de estrés so
  - Una vez obtenido el nombre del pod es necesario conectarse a él mediante una shell interactiva:
     
        kubectl -n liberando-productos-practica exec -it $POD_NAME -- /bin/sh
-       
+
+ - Dentro del pod es necesario realizar una serie de pasos para la prueba de estrés:
+   - Instalación de software necesario:
+         
+         apk update && apk add git go
+         
 Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
 
     echo "GET http://localhost:8081" | vegeta attack -rate=500 -duration=60s | vegeta report
