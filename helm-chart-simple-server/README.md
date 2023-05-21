@@ -1,8 +1,14 @@
 # simple-server
 
-![Version: 1.0.0](https://img.shields.io/badge/Version-1.0.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.0](https://img.shields.io/badge/AppVersion-1.0.0-informational?style=flat-square)
+![Version: 1.0.1](https://img.shields.io/badge/Version-1.0.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.0.1](https://img.shields.io/badge/AppVersion-1.0.1-informational?style=flat-square)
 
 A Helm chart for Kubernetes
+
+## Requirements
+
+| Repository | Name | Version |
+|------------|------|---------|
+| https://charts.bitnami.com/bitnami | mongodb | 12.1.16 |
 
 ## Values
 
@@ -13,9 +19,10 @@ A Helm chart for Kubernetes
 | autoscaling.minReplicas | int | `1` |  |
 | autoscaling.targetCPUUtilizationPercentage | int | `60` |  |
 | autoscaling.targetMemoryUtilizationPercentage | int | `30` |  |
+| config.mongoService | string | `"mongodb"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
-| image.repository | string | `"maciuozz/kc7-sre-practica-final"` |  |
-| image.tag | string | `"1.0.0"` |  |
+| image.repository | string | `"maciuozz/kc7-proyecto-final"` |  |
+| image.tag | string | `"1.0.1"` |  |
 | ingress.annotations | object | `{}` |  |
 | ingress.className | string | `""` |  |
 | ingress.enabled | bool | `false` |  |
@@ -27,6 +34,10 @@ A Helm chart for Kubernetes
 | metrics.svc | object | `{"name":"metrics","port":8000}` | Service configuration used for metrics |
 | metrics.svc.name | string | `"metrics"` | Service port name used for metrics |
 | metrics.svc.port | int | `8000` | Service port number used for metrics |
+| mongodb.auth.rootPassword | string | `"password"` |  |
+| mongodb.metrics.enabled | bool | `true` |  |
+| mongodb.metrics.serviceMonitor.enabled | bool | `true` |  |
+| mongodb.metrics.serviceMonitor.namespace | string | `"monitoring"` |  |
 | replicaCount | int | `1` |  |
 | resources | object | `{"limits":{"cpu":"200m","memory":"256Mi"},"requests":{"cpu":"100m","memory":"128Mi"}}` | Resources configuration for the deployment |
 | service | object | `{"port":8081,"type":"ClusterIP"}` | Service configuration |
