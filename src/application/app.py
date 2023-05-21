@@ -167,14 +167,8 @@ class StudentsServer:
         )
 
         app.add_api_route(
-            path="/hello",
+            path="/",
             endpoint=self.read_main,
-            methods=["GET"]
-        )
-
-        app.add_api_route(
-            path="/joke",
-            endpoint=self.tell_joke,
             methods=["GET"]
         )
 
@@ -219,6 +213,7 @@ class StudentsServer:
         return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_student)
 
     @staticmethod
+    @app.get("/joke")
     async def tell_joke():
         """Tell a joke"""
         REQUESTS.inc()
