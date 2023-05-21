@@ -7,8 +7,6 @@ RUN apk --no-cache add curl build-base npm
 RUN pip install --upgrade pip
 RUN pip install -r requirements.txt
 
-EXPOSE 8081
-
 ENV PYTHONUNBUFFERED 1
 
 HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=5 \

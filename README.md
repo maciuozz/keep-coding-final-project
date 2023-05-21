@@ -90,7 +90,7 @@ Aqui se pueden observar las imagenes subidas a GitHub Container Registry y a Doc
 
 Para desplegar Prometheus creamos un cluster de Kubernetes que utilice la versión v1.21.1 utilizando minikube para ello a través de un nuevo perfil llamado monitoring-demo:
 
-    minikube start --kubernetes-version='v1.21.1' --memory=4096 --addons="metrics-server -p monitoring-demo
+    minikube start --kubernetes-version='v1.21.1' --memory=4096 --addons="metrics-server" -p monitoring-demo
 
 Añadir el repositorio de helm prometheus-community para poder desplegar el chart kube-prometheus-stack:
 
@@ -104,6 +104,15 @@ Desplegar el chart kube-prometheus-stack del repositorio de helm añadido en el 
 En el archivo ***values.yaml*** se establece la configuración para conectar Prometheus con Slack. Para ver los pod en el namespace monitoring utilizado para desplegar el stack de prometheus:
 
     kubectl -n monitoring get po -w
+
+Añadir el repositorio de helm de bitnami para poder desplegar el chart de mongodb empaquetado por esta compañía:
+
+    helm repo add bitnami https://charts.bitnami.com/bitnami
+    helm repo update
+
+Descargar las dependencias necesarias, siendo en este caso el chart de mongodb:
+
+    helm dep up helm-chart-simple-server
 
 Desplegamos en el mismo namespace nuestra aplicación que utiliza [FastAPI](https://fastapi.tiangolo.com/) para levantar un servidor en el puerto
 8081, utilizando Helm:
@@ -126,6 +135,18 @@ Despues de ejecutar el ***port-forward*** mencionado en la sección ***NOTES*** 
 <img width="1382" alt="Screenshot 2023-04-25 at 23 41 36" src="https://user-images.githubusercontent.com/118285718/234411323-c20acfc6-c5b2-44e1-86fd-f99ff771f6c9.png">
 <img width="1390" alt="Screenshot 2023-04-25 at 23 43 09" src="https://user-images.githubusercontent.com/118285718/234411385-83dab2a4-cdce-4ea9-b451-b12ef61b950b.png">
 <img width="1347" alt="Screenshot 2023-04-25 at 23 43 31" src="https://user-images.githubusercontent.com/118285718/234411439-b9b3d80f-21d4-4c81-bd3f-cc101bc014a0.png">
+
+Crear una nueva pestaña y obtener los logs del container wait-mongo del deployment my-release-simple-server en el namespace monitoring-demo, observar como está utilizando ese contenedor para esperar a que MongoDB esté listo:
+
+    kubectl -n monitoring logs -f deployment/my-release-simple-server -c wait-mongo
+
+Una vez se obtenga el mensaje de conexión exitosa a mongo, siendo algo como lo mostrado a continuación, indicará que empezará el contenedor dfad:
+
+    Connecting to my-app-mongodb:27017 (10.101.242.27:27017)
+    HTTP/1.0 200 OK
+    Connection: close
+    Content-Type: text/plain
+    Content-Length: 85
 
 Realizamos una prueba de estrés utilizando [Vegeta](https://github.com/tsenart/vegeta/releases). Podemos ejecutar este comando repetidas veces (el endpoint se puede cambiar: ***"/health", "/bye", "/joke")***:
 

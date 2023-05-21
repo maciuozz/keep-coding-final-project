@@ -27,12 +27,20 @@ spec:
       serviceAccountName: {{ include "simple-server.serviceAccountName" . }}
       securityContext:
         {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      {{ $mongoDBService := printf "%s%s%s%s" .Release.Name "-" .Values.config.mongoService ":27017" -}}
+      initContainers:
+        - name: wait-mongo
+          image: busybox:1.28
+          command: ['sh', '-c', 'until wget --spider -S {{ $mongoDBService }}; do echo waiting for {{ $mongoDBService }}; sleep 2; done']
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+            - secretRef:
+                name: {{ include "simple-server.fullname" . }}-secret
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

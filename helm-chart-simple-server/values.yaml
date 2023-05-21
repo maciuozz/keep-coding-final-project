@@ -4,10 +4,12 @@
 
 replicaCount: 1
 image:
-  repository: maciuozz/kc7-sre-practica-final
+  repository: maciuozz/kc7-proyecto-final
+  #repository: xoanmallon/kc-devops-7-simple-fast-api
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: 1.0.0
+  tag: 1.0.2
+
 serviceAccount:
   # Specifies whether a service account should be created
   create: true
@@ -61,3 +63,15 @@ autoscaling:
   maxReplicas: 100
   targetCPUUtilizationPercentage: 60
   targetMemoryUtilizationPercentage: 30
+
+config:
+  mongoService: mongodb
+
+mongodb:
+  auth:
+    rootPassword: "password"
+  metrics:
+    enabled: true
+    serviceMonitor:
+      enabled: true
+      namespace: "monitoring"

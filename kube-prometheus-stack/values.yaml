@@ -129,6 +129,14 @@ additionalPrometheusRulesMap:
     groups:
       - name: ruleset_1
         rules:
+          - alert: MongoDBDown
+            expr: mongodb_up == 0
+            for: 0m
+            labels:
+              severity: critical
+            annotations:
+              summary: MongoDB Down (instance {{ $labels.instance }})
+              description: "MongoDB instance is down"
           - alert: simpleServerCPUUsageHigh
             expr: avg(rate(container_cpu_usage_seconds_total{container="simple-server"}[1m])) by (pod) > avg(kube_pod_container_resource_requests{resource="cpu", container="simple-server"}) by (pod)
             for: 0m
